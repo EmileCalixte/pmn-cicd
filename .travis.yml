@@ -1,6 +1,9 @@
 language: python
 python:
+  - "3.4"
   - "3.9"
+  - "3.9-dev"
+  - "nightly"
 
 install:
   - pip install -r requirements.txt
