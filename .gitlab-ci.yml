@@ -9,7 +9,8 @@ job-build:
     - export VERSION="$(date +%Y%m%dT%H%M%S)_${CI_COMMIT_SHA:0:8}"
     - docker login "$DOCKER_REGISTRY" --username "$DOCKER_HUB_LOGIN" --password "$DOCKER_HUB_PASSWORD"
     - docker build -t $DOCKER_HUB_LOGIN/pmn_cicd .
-    - docker push $DOCKER_HUB_LOGIN/pmn_cicd:"$VERSION"
+    - docker tag "$DOCKER_HUB_LOGIN"/pmn_cicd:latest "$DOCKER_HUB_LOGIN"/pmn_cicd:"$VERSION"
+    - docker push "$DOCKER_HUB_LOGIN"/pmn_cicd:"$VERSION"
 
 job-test:
   stage: test
