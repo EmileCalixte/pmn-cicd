@@ -21,7 +21,7 @@ job-test:
   stage: test
   script:
     - docker load -i image/app.tar
-    - docker run -t app pylint app.py
+    - docker run app pylint app.py
 
 job-deploy:
   stage: deploy
