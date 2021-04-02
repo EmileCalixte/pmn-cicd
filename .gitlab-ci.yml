@@ -1,6 +1,10 @@
+image: docker:19.03.13-dind
+
+services:
+  - docker:19.03.13-dind
+
 job-build:
   stage: build
-  image: docker
   script:
     - export VERSION="$(date +%Y%m%dT%H%M%S)_${CI_COMMIT_SHA:0:8}"
     - docker login "$DOCKER_REGISTRY" --username "$DOCKER_HUB_LOGIN" --password "$DOCKER_HUB_PASSWORD"
