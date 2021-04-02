@@ -5,7 +5,7 @@ services:
 
 default:
   before_script:
-    - export VERSION="$(date +%Y%m%dT%H%M%S)_${CI_COMMIT_SHA:0:8}"
+    - export VERSION="$(CI_JOB_STARTED_AT)"
 
 job-build:
   stage: build
