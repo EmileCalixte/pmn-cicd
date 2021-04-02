@@ -3,17 +3,24 @@ image: docker:19.03.13-dind
 services:
   - docker:19.03.13-dind
 
+default:
+  before_script:
+    - export VERSION="$(date +%Y%m%dT%H%M%S)_${CI_COMMIT_SHA:0:8}"
+
 job-build:
   stage: build
   script:
-    - export VERSION="$(date +%Y%m%dT%H%M%S)_${CI_COMMIT_SHA:0:8}"
     - docker login "$DOCKER_REGISTRY" --username "$DOCKER_HUB_LOGIN" --password "$DOCKER_HUB_PASSWORD"
     - docker build -t $DOCKER_HUB_LOGIN/pmn_cicd .
+
+#job-test:
+#  stage: test
+#  image: $DOCKER_HUB_LOGIN/pmn_cicd
+#  script:
+#    - pylint app.py
+
+job-deploy:
+  stage: deploy
+  script:
     - docker tag "$DOCKER_HUB_LOGIN"/pmn_cicd:latest "$DOCKER_HUB_LOGIN"/pmn_cicd:"$VERSION"
     - docker push "$DOCKER_HUB_LOGIN"/pmn_cicd:"$VERSION"
-
-job-test:
-  stage: test
-  image: $DOCKER_HUB_LOGIN/pmn_cicd
-  script:
-    - pylint app.py
