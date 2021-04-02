@@ -17,11 +17,12 @@ job-build:
     paths:
       - image
 
-#job-test:
-#  stage: test
-#  image: $DOCKER_HUB_LOGIN/pmn_cicd
-#  script:
-#    - pylint app.py
+job-test:
+  stage: test
+  image: $DOCKER_HUB_LOGIN/pmn_cicd
+  script:
+    - docker load -i image/app.tar
+    - docker run -t app pylint app.py
 
 job-deploy:
   stage: deploy
