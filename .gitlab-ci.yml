@@ -1,5 +1,12 @@
-my-awesome-job:
+job-build:
+  stage: build
+  script:
+    - docker login --username $DOCKER_HUB_LOGIN --password $DOCKER_HUB_PASSWORD
+    - docker build -t $DOCKER_HUB_LOGIN/pmn_cicd
+    - docker push $DOCKER_HUB_LOGIN/pmn_cicd
+
+job-test:
   stage: test
-  image: mimile38/pmn_cicd
+  image: $DOCKER_HUB_LOGIN/pmn_cicd
   script:
     - pylint app.py
