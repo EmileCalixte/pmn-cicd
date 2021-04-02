@@ -12,7 +12,7 @@ job-build:
   script:
     - docker build -t app .
     - mkdir image
-    - docker save app > image/app.tar
+    - docker save app | gzip - > image/app.tar.gz
   artifacts:
     paths:
       - image
@@ -20,13 +20,13 @@ job-build:
 job-test:
   stage: test
   script:
-    - docker load -i image/app.tar
+    - zcat image/app.tar.gz | docker load
     - docker run app pylint app.py
 
 job-deploy:
   stage: deploy
   script:
-    - docker load -i image/app.tar
+    - zcat image/app.tar.gz | docker load
     - docker tag app "$DOCKER_HUB_LOGIN"/pmn_cicd:"$VERSION"
     - docker tag app "$DOCKER_HUB_LOGIN"/pmn_cicd:latest
     - docker login "$DOCKER_REGISTRY" --username "$DOCKER_HUB_LOGIN" --password "$DOCKER_HUB_PASSWORD"
