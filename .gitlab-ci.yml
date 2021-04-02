@@ -1,5 +1,6 @@
 job-build:
   stage: build
+  image: docker
   script:
     - docker login --username $DOCKER_HUB_LOGIN --password $DOCKER_HUB_PASSWORD
     - docker build -t $DOCKER_HUB_LOGIN/pmn_cicd
