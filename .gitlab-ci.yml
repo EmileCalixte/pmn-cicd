@@ -10,7 +10,6 @@ default:
 job-build:
   stage: build
   script:
-    - docker login "$DOCKER_REGISTRY" --username "$DOCKER_HUB_LOGIN" --password "$DOCKER_HUB_PASSWORD"
     - docker build -t app .
     - mkdir image
     - docker save app > image/app.tar
@@ -29,4 +28,5 @@ job-deploy:
   script:
     - docker load -i image/app.tar
     - docker tag app "$DOCKER_HUB_LOGIN"/pmn_cicd:"$VERSION"
+    - docker login "$DOCKER_REGISTRY" --username "$DOCKER_HUB_LOGIN" --password "$DOCKER_HUB_PASSWORD"
     - docker push "$DOCKER_HUB_LOGIN"/pmn_cicd:"$VERSION"
